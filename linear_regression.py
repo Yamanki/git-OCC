@@ -4,6 +4,7 @@ from sklearn import linear_model
 import pandas as pd
 import pickle
 
+
 # Load data
 houses = pd.read_csv("Housing.csv")
 
@@ -50,3 +51,19 @@ print(Y_pred)
 loaded_model = pickle.load(open(filename, 'rb'))
 Y_test = loaded_model.predict(np.array([700]).reshape(1, 1))
 print(Y_test)
+
+# Fecha de prediccion
+from datetime import datetime
+fecha_prediccion = datetime.now()
+
+# Datos para json
+import json
+datos = {}
+datos['predicción'] = []
+datos['predicción'].append({
+    'Fecha de predicción': str(fecha_prediccion),
+    'Nombre del modelo ': filename,
+    'Costo predecido': int(Y_pred),})
+
+with open('data.json', 'w') as file:
+    json.dump(datos, file, indent=3)
